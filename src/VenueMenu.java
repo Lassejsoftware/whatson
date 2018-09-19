@@ -5,13 +5,11 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class VenueMenu {
 
-    ArrayList<Beer> beerMenu = new ArrayList<>();
-
+    private ArrayList<Beer> beerMenu = new ArrayList<>();
 
 public VenueMenu(String venue) throws IOException{
 
@@ -27,8 +25,13 @@ public VenueMenu(String venue) throws IOException{
         String url = "https://untappd.com" + element.select("a").attr("href");
         Beer newBeer = new Beer(beer,brewery,url);
         beerMenu.add(newBeer);
+    }
+
+    for(int i = 0; i<beerMenu.size();i++){
+
+        System.out.println(beerMenu.get(i).getBeer() + " from " + beerMenu.get(i).getBrewery());
+        System.out.println(beerMenu.get(i).getUrl());
 
     }
 }
-
 }

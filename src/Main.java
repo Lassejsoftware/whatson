@@ -1,28 +1,41 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Main{
+
+    VenueLoader venueLoader = new VenueLoader();
+    private int chosenVenue;
 
 
     public static void main(String[] args) throws IOException {
         Main main = new Main();
         System.out.println("*** Welcome to What's on? pre-alpha version ***");
 
-        //Write under here what bar you want to see: Brus, Dispensary, CafeLangeBro or Himmeriget
-        main.getMenu("CafeLangeBro");
+        main.commandLine();
 
     }
 
 
-    public void getMenu(String venue) throws IOException{
-        Venues venues = new Venues();
+    public void commandLine() throws IOException {
+        System.out.println("You can see what these bar, has on menu");
+        System.out.println("Please enter the number in front of the bar you want to explore");
+        venueLoader.getVenues();
 
-        VenueMenu venueMenu = new VenueMenu(venues.venues.get(venue));
-        System.out.println(venue);
-        for(int i = 0; i<venueMenu.beerMenu.size();i++){
+        System.out.print("> ");
 
-            System.out.println(venueMenu.beerMenu.get(i).getBeer() + " from " + venueMenu.beerMenu.get(i).getBrewery());
-            System.out.println(venueMenu.beerMenu.get(i).getUrl());
+        Scanner sc = new Scanner(System.in);
 
+        try {
+            chosenVenue = Integer.parseInt(sc.next());
+
+            VenueMenu venueMenu = new VenueMenu(venueLoader.venues.get(venueLoader.venueNumber.get(chosenVenue-1)));
+
+
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("Nope there is only " + venueLoader.venues.size() + " options!");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("HEY!!! That was not a number?!");
         }
 
 
@@ -33,6 +46,3 @@ public class Main{
 }
 
 
-
-
-//    VenueMenu himmeriget = new VenueMenu("https://untappd.com/v/himmeriget/4320261");

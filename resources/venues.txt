@@ -2,3 +2,4 @@ Brus,https://untappd.com/v/brus/4733071
 CafeLangeBro,https://untappd.com/v/cafe-langebro/29882
 Dispensary,https://untappd.com/v/dispensary-whiskey-beer/6363074
 Himmeriget,https://untappd.com/v/himmeriget/4320261
+HopHouse,https://untappd.com/v/hop-house-amager/7041465

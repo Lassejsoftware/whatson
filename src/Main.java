@@ -38,7 +38,6 @@ public class Main{
             System.out.println("HEY!!! That was not a number?!");
         }
 
-
     }
 
 

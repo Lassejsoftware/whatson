@@ -3,17 +3,46 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.sql.*;
 
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.interactions.Actions;
+
 
 public class VenueMenu {
 
 
-public VenueMenu(String venue) throws IOException{
+public VenueMenu(String venue) throws IOException {
+
+    //LETS SEE THE MAGIC
+
+    System.setProperty("webdriver.gecko.driver", "lib/geckodriver-v0.23.0-win64/geckodriver.exe");
+
+    WebDriver webDriver = new FirefoxDriver();
+    webDriver.get(venue);
+
+    JavascriptExecutor js = (JavascriptExecutor)webDriver;
+    js.executeScript("scrollBy(0,1500)");
+
+    try{
+
+        webDriver.findElement(By.xpath("/html/body/div[4]/div[2]/div[2]/div/div[3]/div/div[2]/div[7]/div/div/a")).click();
+
+
+
+    } catch (Exception e){
+        System.out.println(e);
+    }
+
+
+    //MAGIC ENDS HERE
 
 
 
@@ -26,15 +55,22 @@ public VenueMenu(String venue) throws IOException{
 
 
         Document d = Jsoup.connect(venue).timeout(6000).get();
+
+        //Magic
+//        File input = new File("test.html");
+//        Document d = Jsoup.parse(input, "UTF-8");
+        //Magic ends
+
         String menuID = d.select("ul.menu-section-list").select("ul").attr("id");
         String venueName = d.select("div.venue-name").select("h1").text();
         Elements ele = d.select("ul#" + menuID);
 
 
 
+
         for (Element element : ele.select("li").select("div.beer-details")) {
 
-            String regex = "(?<tap>\\d*). (?<beer>[A-z].*)";
+            String regex = "(?<tap>\\d*). (?<beer>\\d?.*[A-z].*)";
             String beerPlusTap = element.select("h5").select("a").text();
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(beerPlusTap);
@@ -51,6 +87,7 @@ public VenueMenu(String venue) throws IOException{
 
             String type = element.select("h5").select("em").text();
             String brewery = element.select("h6").select("span").select("a").text();
+            brewery = brewery.replace("'","''");
             String url = "https://untappd.com" + element.select("a").attr("href");
 
             String sql = "insert into venuemenu "
